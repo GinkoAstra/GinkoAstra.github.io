@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionHead from "../../components/SectionHead.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCollection } from "astro:content";
+import { CATEGORY, type Domain } from "../../config/site";
+
+export function getStaticPaths() {
+  return Object.entries(CATEGORY).map(([key, c]) => ({
+    params: { section: c.route },
+    props: { domain: key as Domain },
+  }));
+}
+
+const { domain } = Astro.props;
+const c = CATEGORY[domain];
+const posts = (await getCollection("posts", ({ data }) => data.category === domain)).sort(
+  (a, b) => b.data.date.localeCompare(a.data.date)
+);
+const allTags = [...new Set(posts.flatMap((p) => p.data.tags))];
+---
+
+<BaseLayout title={c.label} active={domain}>
+  <SectionHead code={c.code} label={c.label} total={posts.length} />
+  <div class="toolbar">
+    <div class="search">
+      <span>⌕</span>
+      <input id="searchInput" placeholder="搜索标题 / 摘要 / 标签…" />
+    </div>
+    {
+      allTags.map((t) => (
+        <button class="tag" data-tag={t}>
+          #{t}
+        </button>
+      ))
+    }
+  </div>
+  <div class="cards" id="listCards">
+    {posts.map((p) => <PostCard slug={p.id} {...p.data} />)}
+  </div>
+  <div class="empty" id="listEmpty" style={posts.length ? "display:none" : ""}>// NO MATCHING RECORDS //</div>
+
+  <script>
+    import { initListPage } from "../../scripts/listfilter.js";
+    initListPage();
+  </script>
+</BaseLayout>

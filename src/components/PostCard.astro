@@ -1,0 +1,41 @@
+---
+import { CATEGORY, type Domain } from "../config/site";
+
+interface Props {
+  slug: string;
+  title: string;
+  date: string;
+  category: Domain;
+  tags: string[];
+  summary: string;
+  reading?: string;
+}
+
+const { slug, title, date, category, tags, summary, reading } = Astro.props;
+const c = CATEGORY[category];
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<a
+  class="card reveal"
+  href={`${base}/post/${slug}`}
+  data-search={`${title} ${summary} ${tags.join(" ")}`.toLowerCase()}
+  data-tags={tags.join("|")}
+>
+  <div class="meta">
+    <span class={`cat ${category}`}>{c.label}</span>
+    <span>{date}</span>
+    {reading && <span>{reading}</span>}
+  </div>
+  <h3>{title}</h3>
+  <p>{summary}</p>
+  {
+    tags.length > 0 && (
+      <div class="tags">
+        {tags.map((t) => (
+          <span class="tag">#{t}</span>
+        ))}
+      </div>
+    )
+  }
+</a>

@@ -1,4 +1,7 @@
-.qoder/
+.qoder/*
+!.qoder/agents/
 .DS_Store
 node_modules/
 .data/
+dist/
+.astro/

@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BlackHoleScene from "../components/BlackHoleScene.astro";
+import { getCollection } from "astro:content";
+import { CATEGORY } from "../config/site";
+
+const posts = await getCollection("posts");
+const counts = Object.fromEntries(
+  Object.keys(CATEGORY).map((k) => [k, posts.filter((p) => p.data.category === k).length])
+);
+---
+
+<BaseLayout isHome active="home">
+  <BlackHoleScene counts={counts} />
+</BaseLayout>

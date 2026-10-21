@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Content } from "../data/about.md";
+import "katex/dist/katex.min.css";
+---
+
+<BaseLayout title="关于" active="about">
+  <div class="post-body frame">
+    <span class="cb"></span>
+    <Content />
+  </div>
+</BaseLayout>

@@ -1,0 +1,14 @@
+---
+interface Props {
+  code: string;
+  label: string;
+  total: number;
+}
+const { code, label, total } = Astro.props;
+---
+
+<div class="section-head">
+  <span class="code">{code}</span>
+  <h2>{label}</h2>
+  <span class="count"><b id="shownCount">{total}</b> / {total} ENTRIES</span>
+</div>

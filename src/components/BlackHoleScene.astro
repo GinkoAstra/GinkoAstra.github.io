@@ -1,0 +1,35 @@
+---
+import { SITE, CATEGORY } from "../config/site";
+
+interface Props {
+  counts: Record<string, number>;
+}
+const { counts } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<section class="hero-scene" aria-label={SITE.homeAria}>
+  <div id="sceneMount"></div>
+  <div class="absorb-counter">STARS <b id="absorbCount">0</b></div>
+  {
+    Object.entries(CATEGORY).map(([key, c]) => (
+      <a
+        class={`scene-node ${key}`}
+        data-domain={key}
+        href={`${base}/${c.route}`}
+        aria-label={`进入${c.label}分区，共 ${counts[key] ?? 0} 篇`}
+      >
+        <span class="sn-idx">{c.idx}</span>
+        <span class="sn-name">{c.label}</span>
+        <span class="sn-count">{counts[key] ?? 0}</span>
+      </a>
+    ))
+  }
+  <p class="hero-tagline">{SITE.tagline}</p>
+  <p class="hero-hint">{SITE.hint}</p>
+</section>
+
+<script>
+  import { mountBlackHole } from "../scene/boot.js";
+  mountBlackHole();
+</script>
