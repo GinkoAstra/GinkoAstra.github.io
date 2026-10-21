@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YIXIN.ARCHIVE — 技术档案库</title>
+  <meta name="description" content="开源项目进展 · 技术分享 · 数学笔记">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,5 95,50 50,95 5,50' fill='%233fd7ff'/></svg>">
+  <link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="assets/vendor/hljs/github-dark.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/">
+      <span class="dot"></span>
+      <span>YIXIN<span class="sub">.ARCHIVE</span></span>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="#/" data-route="home"><span class="idx">01</span>首页</a>
+      <a href="#/projects" data-route="projects"><span class="idx">02</span>开源项目</a>
+      <a href="#/tech" data-route="tech"><span class="idx">03</span>技术分享</a>
+      <a href="#/math" data-route="math"><span class="idx">04</span>数学笔记</a>
+      <a href="#/about" data-route="about"><span class="idx">05</span>关于</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" title="切换明暗主题">◐ THEME</button>
+  </header>
+
+  <div class="status-strip">
+    <span class="live">SYSTEM ONLINE</span>
+    <span id="statusDate"></span>
+    <span id="statusCount"></span>
+    <span>UPLINK: github.io</span>
+  </div>
+
+  <main class="container" id="app">
+    <div class="boot">LOADING ARCHIVE </div>
+  </main>
+
+  <footer class="footer">
+    <span>YIXIN.ARCHIVE</span>
+    <span class="sep">/</span>
+    <span>开源 · 技术 · 数学</span>
+    <span class="sep">/</span>
+    <span id="footerYear"></span>
+    <span class="right">POWERED BY STATIC HTML · HOSTED ON GITHUB PAGES</span>
+  </footer>
+
+  <script src="assets/vendor/marked/marked.min.js"></script>
+  <script src="assets/vendor/hljs/highlight.min.js"></script>
+  <script src="assets/vendor/katex/katex.min.js"></script>
+  <script src="assets/vendor/katex/auto-render.min.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

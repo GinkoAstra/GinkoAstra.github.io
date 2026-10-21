@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "logkit-v040-rc",
+    "file": "logkit-v040-rc.md",
+    "title": "logkit v0.4.0-rc：插件系统设计与 RFC 讨论记录",
+    "date": "2026-10-18",
+    "category": "project",
+    "tags": ["Rust", "开源", "日志", "RFC"],
+    "summary": "插件系统是 logkit 走向 1.0 的最后一块拼图。这篇记录三个候选方案的取舍过程、最终选定的能力边界，以及社区 RFC 中最有价值的四条反对意见。",
+    "reading": "6 min"
+  },
+  {
+    "slug": "logkit-v030-release",
+    "file": "logkit-v030-release.md",
+    "title": "logkit v0.3.0 发布：三次重构换来的 8 倍吞吐",
+    "date": "2026-10-05",
+    "category": "project",
+    "tags": ["Rust", "开源", "性能", "benchmark"],
+    "summary": "从 mutex 队列到无界 MPSC 再到分片环形缓冲，三个月三次重写核心管线。这份发布记录里有完整的 benchmark 数据、火焰图分析和每个决策的代价。",
+    "reading": "9 min"
+  },
+  {
+    "slug": "gh-pages-actions-deploy",
+    "file": "gh-pages-actions-deploy.md",
+    "title": "GitHub Pages + Actions：零成本静态站自动部署完全指南",
+    "date": "2026-10-12",
+    "category": "tech",
+    "tags": ["GitHub Pages", "CI/CD", "前端", "教程"],
+    "summary": "从仓库命名约定到 Actions 工作流，从自定义域名到 HTTPS 强制跳转，把个人站点部署这件事一次讲透。也是本站正在使用的部署方案。",
+    "reading": "8 min"
+  },
+  {
+    "slug": "markdown-pipeline-katex",
+    "file": "markdown-pipeline-katex.md",
+    "title": "手写 Markdown 渲染管线：marked 与 KaTeX 共存的坑",
+    "date": "2026-09-28",
+    "category": "tech",
+    "tags": ["Markdown", "KaTeX", "前端", "JavaScript"],
+    "summary": "为什么 $x_1$ 会被解析成斜体？数学公式和 Markdown 语法的冲突解法：占位符抽取策略、注入面分析，以及一个不到 40 行的渲染管线实现。",
+    "reading": "7 min"
+  },
+  {
+    "slug": "fourier-series-intuition",
+    "file": "fourier-series-intuition.md",
+    "title": "傅里叶级数：从热方程到信号分析的直觉之旅",
+    "date": "2026-10-15",
+    "category": "math",
+    "tags": ["傅里叶分析", "直觉", "信号处理"],
+    "summary": "不堆定义，先问'为什么周期函数能拆成正弦波的叠加'。从热传导方程的历史动机出发，推出系数公式，最后看一眼它在 MP3 压缩里干了什么。",
+    "reading": "12 min"
+  },
+  {
+    "slug": "eigenvalue-pca-spectral",
+    "file": "eigenvalue-pca-spectral.md",
+    "title": "特征值为什么重要：从主成分分析回望谱定理",
+    "date": "2026-10-01",
+    "category": "math",
+    "tags": ["线性代数", "PCA", "谱定理"],
+    "summary": "特征值不是考试技巧，而是矩阵的'振动模态'。从 PCA 的优化问题出发，反推出为什么对称矩阵一定有正交特征基——谱定理的几何面貌。",
+    "reading": "11 min"
+  }
+]
