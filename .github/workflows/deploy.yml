@@ -25,7 +25,8 @@ jobs:
           cache: npm
       - uses: actions/configure-pages@v5
         id: pages
-      - run: npm ci
+      # npm ci 偶发 "Exit handler never called"(sharp 可选依赖下载抖动),失败自动重试一次
+      - run: npm ci --no-audit --no-fund || (sleep 15 && npm ci --no-audit --no-fund)
       # configure-pages 自动给出正确的站点地址与子路径:
       # 用户页(user.github.io)→ origin + 空 base;项目页 → origin + /仓库名
       - name: Build
