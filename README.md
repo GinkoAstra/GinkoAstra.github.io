@@ -7,10 +7,10 @@
 ## 常用命令
 
 ```bash
-npm install        # 安装依赖
-npm run dev        # 本地开发(热更新)
-npm run build      # 构建到 dist/
-npm run preview    # 预览构建产物
+pnpm install        # 安装依赖
+pnpm dev        # 本地开发(热更新)
+pnpm build      # 构建到 dist/
+pnpm preview    # 预览构建产物
 ```
 
 ## 目录结构
