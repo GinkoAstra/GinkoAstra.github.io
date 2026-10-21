@@ -4,47 +4,47 @@
    ============================================================ */
 
 :root {
-  --bg: #070b12;
-  --bg-2: #0b111c;
-  --panel: rgba(13, 20, 33, 0.72);
-  --panel-solid: #0d1421;
-  --line: rgba(88, 166, 255, 0.16);
-  --line-strong: rgba(88, 166, 255, 0.38);
-  --text: #d7e3f4;
-  --text-dim: #7d8ea8;
-  --text-faint: #4d5b73;
-  --accent: #3fd7ff;
-  --accent-dim: rgba(63, 215, 255, 0.14);
-  --amber: #ffb454;
-  --amber-dim: rgba(255, 180, 84, 0.12);
-  --green: #4ade80;
-  --red: #ff6b6b;
-  --code-bg: #0a0f18;
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --bg: #060503;
+  --bg-2: #0c0a07;
+  --panel: rgba(16, 14, 10, 0.72);
+  --panel-solid: #100e0a;
+  --line: rgba(217, 179, 108, 0.16);
+  --line-strong: rgba(217, 179, 108, 0.38);
+  --text: #e8e2d2;
+  --text-dim: #9a917c;
+  --text-faint: #5c5546;
+  --accent: #e8c37e;
+  --accent-dim: rgba(232, 195, 126, 0.13);
+  --amber: #d4a24e;
+  --amber-dim: rgba(212, 162, 78, 0.12);
+  --green: #b99a68;
+  --red: #e07856;
+  --code-bg: #0a0805;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   --font-body: "Inter", -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
-  --grid-color: rgba(88, 166, 255, 0.05);
+  --grid-color: rgba(217, 179, 108, 0.045);
 }
 
 [data-theme="light"] {
-  --bg: #eef2f8;
-  --bg-2: #e4eaf3;
-  --panel: rgba(255, 255, 255, 0.82);
-  --panel-solid: #ffffff;
-  --line: rgba(15, 76, 129, 0.16);
-  --line-strong: rgba(15, 76, 129, 0.38);
-  --text: #17202e;
-  --text-dim: #55677f;
-  --text-faint: #93a3ba;
-  --accent: #0b7fd4;
-  --accent-dim: rgba(11, 127, 212, 0.1);
-  --amber: #c47a12;
-  --amber-dim: rgba(196, 122, 18, 0.1);
-  --green: #15803d;
-  --red: #dc2626;
-  --code-bg: #0d1421;
-  --shadow: 0 8px 28px rgba(23, 43, 77, 0.12);
-  --grid-color: rgba(15, 76, 129, 0.05);
+  --bg: #f5f2ea;
+  --bg-2: #ece8dc;
+  --panel: rgba(255, 254, 250, 0.82);
+  --panel-solid: #fffefa;
+  --line: rgba(27, 74, 138, 0.16);
+  --line-strong: rgba(27, 74, 138, 0.38);
+  --text: #1c2433;
+  --text-dim: #5a6474;
+  --text-faint: #98a0ae;
+  --accent: #1b4a8a;
+  --accent-dim: rgba(27, 74, 138, 0.1);
+  --amber: #9a6a18;
+  --amber-dim: rgba(154, 106, 24, 0.1);
+  --green: #6a6248;
+  --red: #c04a28;
+  --code-bg: #141210;
+  --shadow: 0 8px 28px rgba(40, 36, 20, 0.12);
+  --grid-color: rgba(27, 74, 138, 0.05);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -184,77 +184,181 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ---------- layout ---------- */
 .container { max-width: 1080px; margin: 0 auto; padding: 40px 24px 80px; }
 
-/* ---------- hero ---------- */
-.hero {
-  border: 1px solid var(--line);
-  background: var(--panel);
-  backdrop-filter: blur(8px);
-  padding: 48px 40px;
-  margin-bottom: 36px;
+/* ---------- hero: ASTRA 三维引力场景（整页即场景） ---------- */
+.hero-scene {
   position: relative;
-  box-shadow: var(--shadow);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 46%, transparent 34%, color-mix(in srgb, var(--bg) 55%, transparent) 100%);
 }
 
-.hero .sys {
+#sceneMount {
+  position: absolute;
+  inset: 0;
+}
+#sceneMount canvas { display: block; width: 100%; height: 100%; }
+
+.hero-sys {
+  position: absolute;
+  top: 18px;
+  left: 22px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--amber);
-  letter-spacing: 0.25em;
-  margin-bottom: 14px;
-}
-.hero .sys::before { content: "// "; color: var(--text-faint); }
-
-.hero h1 {
-  font-size: clamp(30px, 5.5vw, 52px);
-  line-height: 1.15;
-  letter-spacing: 0.02em;
-  font-weight: 800;
-}
-.hero h1 .glow {
-  color: var(--accent);
-  text-shadow: 0 0 24px var(--accent-dim), 0 0 8px var(--accent-dim);
+  letter-spacing: 0.22em;
+  pointer-events: none;
 }
 
-.hero .tagline {
-  margin-top: 16px;
-  color: var(--text-dim);
-  max-width: 640px;
-  font-size: 15px;
-}
-
-.hero .cursor {
-  display: inline-block;
-  width: 9px; height: 1.1em;
-  background: var(--accent);
-  vertical-align: text-bottom;
-  animation: blink 1s steps(1) infinite;
-}
-
-.hero .quick {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 26px;
-}
-.hero .quick a {
+.absorb-counter {
+  position: absolute;
+  top: 16px;
+  right: 22px;
   font-family: var(--font-mono);
-  font-size: 12.5px;
-  padding: 8px 16px;
-  border: 1px solid var(--line-strong);
-  color: var(--text);
-  background: transparent;
-  transition: all 0.2s;
-  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--text-faint);
+  border: 1px solid var(--line);
+  padding: 5px 12px;
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  backdrop-filter: blur(3px);
+  pointer-events: none;
+  z-index: 4;
 }
-.hero .quick a:hover {
-  background: var(--accent-dim);
-  border-color: var(--accent);
-  color: var(--accent);
+.absorb-counter b { color: var(--amber); font-weight: 700; }
+
+/* 档案板标签：文字留在 DOM（锐利、可选中、可聚焦），位置每帧与 3D 板同步 */
+.scene-node {
+  position: absolute;
+  left: 0; top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--text-dim);
+  white-space: nowrap;
+  text-transform: uppercase;
+  border-bottom: 1px solid transparent;
+  will-change: transform;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+.scene-node:hover, .scene-node.hot, .scene-node:focus-visible {
+  color: var(--text);
+  border-bottom-color: var(--amber);
   text-decoration: none;
 }
-.hero .quick a.primary { background: var(--accent); border-color: var(--accent); color: #04202b; font-weight: 700; }
-.hero .quick a.primary:hover { filter: brightness(1.15); }
-[data-theme="light"] .hero .quick a.primary { color: #fff; }
+.scene-node .sn-idx { color: var(--amber); font-size: 10px; }
+.scene-node .sn-count { color: var(--amber); font-weight: 700; }
+
+.hero-tagline {
+  position: absolute;
+  left: 0; right: 0; bottom: 46px;
+  margin: 0;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 14px;
+  text-shadow: 0 1px 8px var(--bg);
+  pointer-events: none;
+  z-index: 2;
+}
+.hero-hint {
+  position: absolute;
+  left: 0; right: 0; bottom: 22px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.28em;
+  color: var(--text-faint);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* WebGL 不可用时的降级：标签排成一行 */
+.scene-fallback #sceneMount { display: none; }
+.scene-fallback .scene-node {
+  position: static;
+  transform: none !important;
+  opacity: 1 !important;
+}
+.scene-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+
+/* ---------- 解密转场覆盖层（对角金发丝收拢 → 展开） ---------- */
+#wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  visibility: hidden;
+}
+#wipe.on { visibility: visible; }
+#wipe .wipe-bg {
+  position: absolute; inset: 0;
+  background: var(--bg);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+#wipe.on .wipe-bg { opacity: 0.97; }
+#wipe.reveal .wipe-bg { opacity: 0; transition-delay: 0.14s; }
+#wipe .wipe-line {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 150vmax; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  transform-origin: center;
+  opacity: 0;
+}
+#wipe .wipe-line.l1 { transform: translate(-50%, -50%) rotate(24deg) scaleX(0); }
+#wipe .wipe-line.l2 { transform: translate(-50%, -50%) rotate(-24deg) scaleX(0); }
+#wipe.on .wipe-line { opacity: 1; transition: transform 0.3s cubic-bezier(0.7, 0, 0.3, 1); }
+#wipe.on .wipe-line.l1 { transform: translate(-50%, -50%) rotate(24deg) scaleX(1); }
+#wipe.on .wipe-line.l2 { transform: translate(-50%, -50%) rotate(-24deg) scaleX(1); }
+#wipe.reveal .wipe-line.l1 { transform: translate(-50%, -50%) rotate(24deg) scaleX(0); transition: transform 0.34s cubic-bezier(0.7, 0, 0.3, 1) 0.1s; }
+#wipe.reveal .wipe-line.l2 { transform: translate(-50%, -50%) rotate(-24deg) scaleX(0); transition: transform 0.34s cubic-bezier(0.7, 0, 0.3, 1) 0.1s; }
+#wipe.fast .wipe-bg { transition-duration: 0.18s; }
+#wipe.fast.on .wipe-line { transition-duration: 0.18s; }
+
+/* 内容揭示：frost → clear，自上而下（档案解密） */
+@keyframes frostIn {
+  from { opacity: 0; filter: blur(10px); clip-path: inset(0 0 92% 0); }
+  to   { opacity: 1; filter: blur(0);    clip-path: inset(0 0 0 0); }
+}
+.post-body.frame, .section-head, .toolbar { animation: frostIn 0.65s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.toolbar { animation-delay: 0.08s; }
+@media (prefers-reduced-motion: reduce) {
+  .post-body.frame, .section-head, .toolbar { animation: none; }
+  #wipe .wipe-line { display: none; }
+}
+
+/* ---------- home: 整页即场景 ---------- */
+body.is-home {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+}
+body.is-home .status-strip,
+body.is-home .footer { display: none; }
+body.is-home .container {
+  flex: 1;
+  min-height: 0;
+  max-width: none;
+  width: 100%;
+  padding: 0;
+  display: flex;
+}
+
+.brand .ginkgo { flex: none; }
 
 /* corner brackets — archive frame signature */
 .frame { position: relative; }
@@ -555,7 +659,9 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 720px) {
   .topbar { flex-wrap: wrap; height: auto; padding: 10px 14px; gap: 10px; }
   .nav { margin-left: 0; overflow-x: auto; width: 100%; }
-  .hero { padding: 30px 22px; }
+  .hero-sys { display: none; }
+  .absorb-counter { right: 14px; top: 12px; font-size: 10px; }
+  .scene-node { font-size: 10px; letter-spacing: 0.16em; gap: 7px; }
   .post-body { padding: 24px 20px; }
   .container { padding: 24px 14px 60px; }
   .status-strip { display: none; }

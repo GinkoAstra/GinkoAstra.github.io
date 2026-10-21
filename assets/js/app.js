@@ -3,18 +3,17 @@
 
 /* ============ 站点配置（部署前改这里） ============ */
 const SITE = {
-  name: "YIXIN.ARCHIVE",
-  owner: "yixin",
+  name: "ASTRA",
   github: "https://github.com/yixin",        // 改成你的 GitHub 主页
   email: "yixin@example.com",                // 改成你的邮箱
-  motto: "记录开源项目的每一次迭代，写下技术实践中的真实坑与解法，推导数学里那些漂亮的结构。",
+  tagline: "开源 · 技术 · 数学 —— 一切知识记录，终将坠入这片星海视界。",
   icp: "",                                    // 如有备案号可填
 };
 
 const CATEGORY = {
-  project: { label: "开源项目", cls: "project", route: "projects", code: "OSS-LOG" },
-  tech:    { label: "技术分享", cls: "tech",    route: "tech",    code: "TECH-NOTE" },
-  math:    { label: "数学笔记", cls: "math",    route: "math",    code: "MATH-NOTE" },
+  project: { label: "开源项目", cls: "project", route: "projects", code: "OSS-LOG", glyph: "✦" },
+  tech:    { label: "技术分享", cls: "tech",    route: "tech",    code: "TECH-NOTE", glyph: "</>" },
+  math:    { label: "数学笔记", cls: "math",    route: "math",    code: "MATH-NOTE", glyph: "∑" },
 };
 
 /* ============ 工具 ============ */
@@ -102,39 +101,25 @@ function cardHTML(p) {
 
 /* ============ 视图 ============ */
 function viewHome() {
-  const total = POSTS.length;
-  const latest = [...POSTS].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 6);
-  const sections = Object.entries(CATEGORY).map(([key, c]) => {
-    const list = postsBy(key);
-    if (!list.length) return "";
+  const nodes = Object.entries(CATEGORY).map(([key, c], i) => {
+    const count = postsBy(key).length;
     return `
-      <div class="section-head reveal">
-        <span class="code">${c.code}</span>
-        <h2>${c.label}</h2>
-        <span class="count">${list.length} ENTRIES → <a href="#/${c.route}">全部</a></span>
-      </div>
-      <div class="cards">${list.slice(0, 3).map(cardHTML).join("")}</div>`;
+      <a class="scene-node ${c.cls}" data-domain="${key}" href="#/${c.route}"
+         aria-label="进入${c.label}分区，共 ${count} 篇">
+        <span class="sn-idx">0${i + 2}</span>
+        <span class="sn-name">${c.label}</span>
+        <span class="sn-count">${count}</span>
+      </a>`;
   }).join("");
 
   return `
-    <section class="hero frame reveal"><span class="cb"></span>
-      <div class="sys">SIGNAL ACQUIRED · PERSONAL TECH ARCHIVE</div>
-      <h1>你好，我是 <span class="glow">${esc(SITE.owner)}</span><br>这是我的<span class="glow">技术档案库</span><span class="cursor"></span></h1>
-      <p class="tagline" id="typewriter" data-text="${esc(SITE.motto)}"></p>
-      <div class="quick">
-        <a class="primary" href="#/projects">▸ 开源项目进展</a>
-        <a href="#/tech">▸ 技术分享</a>
-        <a href="#/math">▸ 数学笔记</a>
-        <a href="${esc(SITE.github)}" target="_blank" rel="noopener">▸ GITHUB ↗</a>
-      </div>
-    </section>
-    <div class="section-head reveal">
-      <span class="code">LATEST</span>
-      <h2>最新发布</h2>
-      <span class="count">${total} ENTRIES TOTAL</span>
-    </div>
-    <div class="cards">${latest.map(cardHTML).join("")}</div>
-    ${sections}`;
+    <section class="hero-scene" aria-label="黑洞星图 · 记忆归档场景">
+      <div id="sceneMount"></div>
+      <div class="absorb-counter">STARS <b id="absorbCount">0</b></div>
+      ${nodes}
+      <p class="hero-tagline">${esc(SITE.tagline)}</p>
+      <p class="hero-hint">// CLICK A CONSTELLATION TO ENTER</p>
+    </section>`;
 }
 
 function viewList(cat, query = "", tag = "") {
@@ -198,19 +183,69 @@ async function viewAbout() {
   return `<div class="post-body frame"><span class="cb"></span>${renderMarkdown(md)}</div>`;
 }
 
-/* ============ 交互增强 ============ */
-function typewriter() {
-  const el = $("#typewriter");
-  if (!el) return;
-  const text = el.dataset.text;
-  let i = 0;
-  const tick = () => {
-    if (i <= text.length) {
-      el.textContent = text.slice(0, i++);
-      setTimeout(tick, 34);
+/* ============ 转场：解密线收拢 / 展开（RhineLabUI 式物理转场） ============ */
+window.AstraTransition = {
+  el: null,
+  busy: false,
+  ensure() {
+    if (!this.el) {
+      this.el = document.createElement("div");
+      this.el.id = "wipe";
+      this.el.innerHTML = `<span class="wipe-bg"></span><span class="wipe-line l1"></span><span class="wipe-line l2"></span>`;
+      document.body.appendChild(this.el);
     }
-  };
-  tick();
+    return this.el;
+  },
+  cover(cb, fast = false) {
+    const el = this.ensure();
+    if (this.busy) { cb && cb(); return; }
+    this.busy = true;
+    el.classList.remove("reveal"); el.classList.add("on");
+    if (fast) el.classList.add("fast"); else el.classList.remove("fast");
+    setTimeout(() => { cb && cb(); }, fast ? 190 : 300);
+  },
+  reveal() {
+    const el = this.ensure();
+    el.classList.add("reveal");
+    setTimeout(() => { el.classList.remove("on", "reveal", "fast"); this.busy = false; }, 480);
+  },
+};
+
+/* ============ 交互增强 ============ */
+async function sceneReady() {
+  if (window.AstraScene) return true;
+  return new Promise((res) => {
+    window.addEventListener("astra-scene-ready", () => res(true), { once: true });
+    setTimeout(() => res(!!window.AstraScene), 3000);
+  });
+}
+
+async function mountScene() {
+  const mount = $("#sceneMount");
+  if (!mount) return;
+  if (!(await sceneReady())) { mount.parentElement.classList.add("scene-fallback"); return; }
+  const counter = $("#absorbCount");
+  const nodes = $$(".scene-node").map((el, i) => ({
+    el,
+    domain: el.dataset.domain,
+    glyph: CATEGORY[el.dataset.domain].glyph,
+    idx: `0${i + 2}`,
+  }));
+  const ok = window.AstraScene.mount(mount, {
+    nodes,
+    onAbsorb: (n) => { if (counter) counter.textContent = n; },
+  });
+  if (!ok) { mount.parentElement.classList.add("scene-fallback"); return; }
+
+  nodes.forEach((n) => {
+    n.el.addEventListener("mouseenter", () => window.AstraScene.hover(n.domain));
+    n.el.addEventListener("mouseleave", () => window.AstraScene.hover(null));
+    n.el.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (AstraTransition.busy) return;
+      window.AstraScene.select(n.domain, () => { location.hash = `#/${CATEGORY[n.domain].route}`; });
+    });
+  });
 }
 
 function observeReveals() {
@@ -251,10 +286,13 @@ async function renderList(cat, query, tag, full = true) {
   observeReveals();
 }
 
-async function route() {
+let firstRoute = true;
+
+async function renderRoute() {
   const hash = location.hash.replace(/^#\/?/, "");
   const [page, arg] = hash.split("/");
   const app = $("#app");
+  document.body.classList.toggle("is-home", !page);
 
   $$("#nav a").forEach((a) => {
     const r = a.dataset.route;
@@ -266,7 +304,7 @@ async function route() {
   try {
     if (!page) {
       app.innerHTML = viewHome();
-      typewriter();
+      mountScene();
     } else if (CATEGORY[page] || page === "projects" || page === "tech" || page === "math") {
       const cat = page === "projects" ? "project" : page === "tech" ? "tech" : "math";
       app.innerHTML = viewList(cat);
@@ -276,7 +314,6 @@ async function route() {
       currentPostCategoryRoute = p ? CATEGORY[p.category].route : null;
       app.innerHTML = `<div class="boot">DECRYPTING RECORD </div>`;
       app.innerHTML = await viewPost(arg);
-      // 重新设置导航高亮（此时分类已知）
       $$("#nav a").forEach((a) =>
         a.classList.toggle("active", a.dataset.route === currentPostCategoryRoute));
     } else if (page === "about") {
@@ -291,16 +328,31 @@ async function route() {
   observeReveals();
 }
 
+async function route() {
+  const wasHome = document.body.classList.contains("is-home");
+  const covered = AstraTransition.busy;   // 档案板点击路径已自行 cover
+  if (window.AstraScene) window.AstraScene.unmount();
+  if (!firstRoute && !covered) {
+    AstraTransition.cover(() => {}, true);
+    await new Promise((r) => setTimeout(r, 200));
+  }
+  await renderRoute();
+  AstraTransition.reveal();
+  firstRoute = false;
+}
+
 let currentPostCategoryRoute = null;
 
 /* ============ 主题 ============ */
 function initTheme() {
   const saved = localStorage.getItem("theme");
   if (saved) document.documentElement.dataset.theme = saved;
-  $("#themeToggle").addEventListener("click", () => {
+  $("#themeToggle").addEventListener("click", (e) => {
     const next = document.documentElement.dataset.theme === "light" ? "" : "light";
     document.documentElement.dataset.theme = next;
     localStorage.setItem("theme", next);
+    // 主题波：从点击位置向整个场景传播（RhineLabUI ThemeWave）
+    if (window.AstraScene) window.AstraScene.themeWave(next === "light", e.clientX, e.clientY);
   });
 }
 
