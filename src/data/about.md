@@ -18,16 +18,20 @@
 
 ## 联系我
 
-- GitHub: [@yixin](https://github.com/yixin)
-- Email: yixin@example.com
+两个身份，按内容分流：
+
+- **GinkoAstra** —— 自己的开源项目与想法
+  - GitHub: [github.com/GinkoAstra](https://github.com/GinkoAstra)
+  - Email: ginkoastra@gmail.com
+- **IdeaMeshDYX** —— 开源共享
+  - GitHub: [github.com/ideameshdyx](https://github.com/ideameshdyx)
+  - Email: ideameshdyx@gmail.com
 
 ## 本站技术栈
 
-纯静态 HTML/CSS/JS，零构建、零依赖服务：
-
-- Markdown 渲染：marked（本地 vendored）
-- 数学公式：KaTeX（本地 vendored）
-- 代码高亮：highlight.js
+- 静态生成：Astro
+- 首页场景：three.js 黑洞星图（双主题）
+- 数学公式：KaTeX
 - 托管：GitHub Pages
 
 源码即本站仓库，欢迎参考。

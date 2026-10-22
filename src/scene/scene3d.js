@@ -326,7 +326,7 @@ class AstraScene {
 
     /* ----- 远景星云（深度感） ----- */
     this.nebulae = [];
-    [[-6.5, 2.2, -9, 14, 0], [5.5, -1.4, -10, 16, 1]].forEach(([x, y, z, s, ci]) => {
+    [[-6.5, 2.2, -9, 19, 0], [5.5, -1.4, -10, 22, 1]].forEach(([x, y, z, s, ci]) => {
       const m = new THREE.SpriteMaterial({
         map: this.glowTex, color: P.nebula[ci].clone(), transparent: true,
         opacity: this.light ? 0.05 : 0.16, blending: THREE.AdditiveBlending, depthWrite: false,
@@ -369,10 +369,10 @@ class AstraScene {
       void main(){
         float r = length(vP);
         float d = (r - 0.60) / 0.32;
-        float ring = exp(-pow((d - 0.28) * 3.4, 2.0));
+        float ring = exp(-pow((d - 0.28) * 2.9, 2.0));
         float asym = 1.0 + 0.35 * (vP.x / max(r, 0.001));
-        vec3 cd = vec3(1.0, 0.95, 0.82) * ring * asym * (1.0 + uSuck * 1.5);
-        vec3 cl = vec3(0.09, 0.13, 0.30) * ring;
+        vec3 cd = vec3(1.0, 0.95, 0.82) * ring * asym * (1.0 + uSuck * 1.5) * 1.3;
+        vec3 cl = vec3(0.09, 0.13, 0.30) * ring * 1.15;
         vec3 col = mix(cd, cl, uLight);
         float a = ring * (0.95 - 0.25 * uLight) * uAlpha;
         if (a < 0.004) discard;
@@ -449,14 +449,14 @@ class AstraScene {
                   + 0.30 * sin(a * 6.0 - r * 5.5 + 1.7)
                   + 0.15 * sin(a * 11.0 + r * 9.0 + 4.2);
           n = n * 0.5 + 0.5;
-          float band = smoothstep(0.80, 1.12, r) * (1.0 - smoothstep(1.55, 2.65, r));
+          float band = smoothstep(0.80, 1.12, r) * (1.0 - smoothstep(1.9, 3.35, r));
           vec3 cd = vec3(1.0, 0.96, 0.86);
           cd = mix(cd, vec3(0.98, 0.74, 0.34), smoothstep(0.85, 1.5, r));
-          cd = mix(cd, vec3(0.70, 0.36, 0.12), smoothstep(1.5, 2.15, r));
-          cd = mix(cd, vec3(0.22, 0.09, 0.03), smoothstep(2.15, 2.65, r));
+          cd = mix(cd, vec3(0.70, 0.36, 0.12), smoothstep(1.5, 2.3, r));
+          cd = mix(cd, vec3(0.22, 0.09, 0.03), smoothstep(2.3, 3.35, r));
           vec3 cl = vec3(0.07, 0.11, 0.26);
-          cl = mix(cl, vec3(0.16, 0.28, 0.52), smoothstep(0.85, 1.6, r));
-          cl = mix(cl, vec3(0.45, 0.50, 0.66), smoothstep(1.6, 2.4, r));
+          cl = mix(cl, vec3(0.16, 0.28, 0.52), smoothstep(0.85, 1.8, r));
+          cl = mix(cl, vec3(0.45, 0.50, 0.66), smoothstep(1.8, 3.1, r));
           vec3 col = mix(cd, cl, uLight);
           float dop = 1.0 + (0.55 - 0.25 * uLight) * (vP.x / r);
           col *= (0.45 + 0.85 * n) * dop;
@@ -469,7 +469,7 @@ class AstraScene {
       blending: this.light ? THREE.NormalBlending : THREE.AdditiveBlending,
       side: THREE.DoubleSide,
     });
-    this.disk = new THREE.Mesh(new THREE.RingGeometry(0.78, 2.7, 160, 1), this.diskMat);
+    this.disk = new THREE.Mesh(new THREE.RingGeometry(0.78, 3.5, 160, 1), this.diskMat);
     this.disk.rotation.x = -Math.PI / 2;
     this.disk.renderOrder = 1;
     this.ecliptic.add(this.disk);
@@ -497,7 +497,7 @@ class AstraScene {
         pts.push(new THREE.Vector3(Math.cos(a) * g.r, g.y, Math.sin(a) * g.r));
       }
       const m = new THREE.LineBasicMaterial({
-        color: P.stream.clone(), transparent: true, opacity: this.light ? 0.16 : 0.10,
+        color: P.stream.clone(), transparent: true, opacity: this.light ? 0.20 : 0.14,
         blending: this.light ? THREE.NormalBlending : THREE.AdditiveBlending, depthWrite: false,
       });
       const loop = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), m);
@@ -717,16 +717,17 @@ class AstraScene {
       for (let k = 0; k < this.PER; k++) {
         const ci = (Math.random() * 4) | 0;
         const p = {
-          g: gi, t: rand(0, 0.95), flight: rand(3.0, 4.4),
+          g: gi, t: 0, flight: 3.8,
           a0: 0, r0: 0, yb: 0, wob: rand(-1, 1),
-          size: rand(0.2, 0.36),
+          size: rand(0.24, 0.30),
           cell: DOMAIN_OFFSET[g.domain] + ((Math.random() * GLYPHS[g.domain].length) | 0),
           cd: PALETTE.dark.field[ci].clone(), cl: PALETTE.light.field[ci].clone(),
           tm: this.light ? 1 : 0, boost: 0,
           pos: new THREE.Vector3(),
         };
         this.respawnBead(p, true);
-        p.t = rand(0, 0.95);
+        /* 乐谱式排布:同一组内的音符等间距分布在轨道弧上,匀速流动 */
+        p.t = (k / this.PER) * 0.95;
         this.parts.push(p);
       }
     });
@@ -734,9 +735,10 @@ class AstraScene {
 
   respawnBead(p, init = false) {
     const g = GROUPS[p.g];
-    p.a0 = g.angle + rand(1.7, 2.9);
-    p.r0 = g.r + rand(0.8, 1.3);
-    p.yb = g.y + rand(-0.5, 0.7);
+    /* 音符贴着谱线(轨道环)流动:固定弧长起点,半径/高度始终压在环上 */
+    p.a0 = g.angle + 2.4;
+    p.r0 = g.r;
+    p.yb = g.y;
     if (!init) p.t = 0;
     const list = GLYPHS[g.domain];
     p.cell = DOMAIN_OFFSET[g.domain] + ((Math.random() * list.length) | 0);
@@ -913,9 +915,9 @@ class AstraScene {
     this.arcUniforms.uSuck.value = this.suck; this.arcUniforms.uAlpha.value = introA;
     this.horizon.material.color.copy(P.dark.horizon).lerp(P.light.horizon, LM);
     this.glowMat.color.copy(P.dark.glow).lerp(P.light.glow, LM);
-    this.glowMat.opacity = (0.38 - 0.26 * LM) * introA * (1 + this.suck * 2) * (1 - smooth((this.suck - 0.72) / 0.28));
-    this.glow.scale.setScalar(5.5 * (1 + this.suck * 1.2));
-    this.nebulae.forEach((m, i) => { m.opacity = (this.light ? 0.05 : 0.16 - i * 0.04) * introA; });
+    this.glowMat.opacity = (0.44 - 0.30 * LM) * introA * (1 + this.suck * 2) * (1 - smooth((this.suck - 0.72) / 0.28));
+    this.glow.scale.setScalar(7.2 * (1 + this.suck * 1.2));
+    this.nebulae.forEach((m, i) => { m.opacity = (this.light ? 0.05 : 0.20 - i * 0.05) * introA; });
     if (!this._dbgBloom) {
       this.bloom.strength = (0.5 + this.suck * 0.25) * (1 - LM);
       this.bloom.threshold = 0.55 + (0.97 - 0.55) * LM;
@@ -979,11 +981,10 @@ class AstraScene {
       }
       const e = smooth(p.t);
       const ang = p.a0 + (g.angle + 0.12 - p.a0) * e;
-      const r = p.r0 + (g.r - p.r0) * e;
       p.pos.set(
-        Math.cos(ang) * r,
-        p.yb + (g.y - p.yb) * e + Math.sin(p.t * Math.PI) * 0.25 * p.wob,
-        Math.sin(ang) * r
+        Math.cos(ang) * g.r,
+        g.y,
+        Math.sin(ang) * g.r
       );
       p.boost = 0;
       for (const rp of this.ripples) {

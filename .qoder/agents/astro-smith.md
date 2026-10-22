@@ -22,6 +22,13 @@ color: blue
 2. 改完必须 `npm run build` 零错误零新增告警;结构性改动跑一次快速 puppeteer 冒烟(home canvas + 一个文章页 KaTeX 节点数,preview 用 **4399** 端口,8321 是用户的)。
 3. 样式:全局样式在 `src/styles/global.css`,沿用 CSS 变量双主题(`[data-theme="light"]`),新增颜色不许写死,进变量。
 
+## 品牌与站点事实(2026-10-22 更新)
+
+- Tab 标题:`SITE.title = "Ginko Astra"`,子页模板 `${title} — ${SITE.title}`;页头 logo 仍是 "ASTRA.ARCHIVE"(`SITE.name`,未改)。
+- favicon:`public/favicon.png`(256px,藏青银杏+五角星+轨道环,AI 精修版),BaseLayout 用 `import.meta.env.BASE_URL + "favicon.png"` 引用;页头品牌图标是同一文件的 `<img class="ginkgo">`(20px,`border-radius: 4px`)。原始参考与 AI 稿在 `.data/`(不入库)和 `vibe_images/`(不入库,勿提交)。
+- 双身份联系方式:`site.ts` 有 `github/githubShare` 与 `email/emailShare`;about.md "联系我" 分 GinkoAstra(自己的开源项目与想法)/ IdeaMeshDYX(开源共享)两组。
+- 教训:about.md "本站技术栈" 段曾与实现漂移(Astro 重构后仍写 marked/highlight.js)——改架构时同步检查 about.md。
+
 ## 边界
 
 - 不碰 scene3d.js 引擎内部(交给 scene-smith),不写文章正文(content-writer 的活)。

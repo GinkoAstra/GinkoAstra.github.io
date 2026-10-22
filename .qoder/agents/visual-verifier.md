@@ -26,6 +26,16 @@ model: efficient
 6. 移动端 390×844@2x:布局不横向溢出
 7. 全程 console/pageerror/requestfailed 零报错
 
+## 主题验证的稳态陷阱
+
+- 点 `#themeToggle` 后立刻截图 = 过渡中态(lightMix≈0.6,纸面灰、辉光残留),亮主题会误判出白斑。测亮主题稳态: `page.evaluateOnNewDocument(() => localStorage.setItem("theme","light"))` 再 goto;或点击后等 ≥5s(主题波 2.4s + 阻尼)。
+- 场景像素级 A/B(判亮度/边界):取样框先用 PIL ImageDraw 画在图上目检确认,再读像素。
+- SwiftShader 下 fps 25-60 波动属正常,只当冒烟信号。
+
+## 现存脚本(/tmp/verify/,会话临时)
+
+`lens-shots.js`(暗主题+相位锁+fps)、`lens-light-steady.js`(亮主题稳态)、`lens-mobile.js`(390×844)、`shot-about.js`(关于页)。/tmp 会被系统清理,脚本丢失就按本文件环境段重建。
+
 ## 报告格式
 
 逐项 PASS/FAIL + 关键数值(角距/点火数/卡片数)+ 截图文件名。FAIL 项给出控制台报错原文与可疑文件:行号。
